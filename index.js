@@ -9,7 +9,7 @@ const sftp = new Client("remote-client");
 const express = require("express");
 const app = express();
 
-// connect
+// sftp connect
 async function connectSFTP() {
 	try {
 		await sftp.connect({
@@ -26,10 +26,8 @@ async function connectSFTP() {
 	}
 }
 
-// cron
-cron.schedule(process.env.CRON_SCHEDULE, async () => {
-	console.log(`[LOG] DOWNLOADING REMOTE DIRECTORY AND UPDATING AT UNIXEPOCH[${Date.now()}]`);
-
+// download and move
+async function downloadAndMoveFiles() {
 	try {
 		fs.rmSync("download", { recursive: true, force: true });
 	} catch (e) {
@@ -43,9 +41,26 @@ cron.schedule(process.env.CRON_SCHEDULE, async () => {
 		console.error(`[ERROR] ERROR DOWNLOADING FILES FROM REMOTE AT UNIXEPOCH[${Date.now()}]`);
 		console.error(e);
 	}
+}
+
+// cron
+cron.schedule(process.env.CRON_SCHEDULE, async () => {
+	console.log(`[LOG] SCHEDULED DOWNLOAD AND UPDATE OF REMOTE/LOCAL DIRECTORY AT UNIXEPOCH[${Date.now()}]`);
+
+	await downloadAndMoveFiles();
 });
 
 // web hosting
+app.get("/%3Cdownload%3E", async (req, res) => {
+	console.log(`[LOG] FORCED DOWNLOAD AND UPDATE OF REMOTE/LOCAL DIRECTORY AT UNIXEPOCH[${Date.now()}] IP[${req.ip}]`);
+
+	downloadAndMoveFiles()
+
+	res.status(200).json({
+		response: "Started file download"
+	})
+});
+
 app.listen(process.env.WEBSERVER_PORT, async () => {
 	app.use(express.static("download"));
 

@@ -35,3 +35,6 @@ sudo docker run -d \
 This program downloads all the files in the directory and hosts them. This works for HTML websites and really anthing you
 want. I am sure there is a better way to do this lol but this was simple to make and it works for what we need. To access
 the files just go to `http://[your-server-ip]:3000/folder1/folder2/index.html`. This works well because you can link the files inside the HTML and they can all be accessed by the file on the server allowing for styles, complex folder structures, and images.
+
+# Routes
+I added a new route `/<download>`, navigating to this route forces an update of the files from the server, great for testing or API. The route returns a JSON object and a 200 status code regardless of download status.
