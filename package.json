@@ -1,0 +1,20 @@
+{
+  "name": "sftp-to-http",
+  "version": "1.0.0",
+  "description": "Program to grab student files from an SFTP server and run them on a HTTP server for live viewing",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "prod": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "node-cron": "^3.0.3",
+    "nodemon": "^3.1.9",
+    "ssh2-sftp-client": "^11.0.0"
+  }
+}
