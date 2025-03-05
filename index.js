@@ -7,6 +7,7 @@ const Client = require("ssh2-sftp-client");
 const sftp = new Client("remote-client");
 
 const express = require("express");
+const serveIndex = require('serve-index');
 const app = express();
 
 // sftp connect
@@ -54,15 +55,16 @@ cron.schedule(process.env.CRON_SCHEDULE, async () => {
 app.get("/%3Cdownload%3E", async (req, res) => {
 	console.log(`[LOG] FORCED DOWNLOAD AND UPDATE OF REMOTE/LOCAL DIRECTORY AT UNIXEPOCH[${Date.now()}] IP[${req.ip}]`);
 
-	downloadAndMoveFiles()
+	downloadAndMoveFiles();
 
 	res.status(200).json({
-		response: "Started file download"
-	})
+		response: "Started file download",
+	});
 });
 
 app.listen(process.env.WEBSERVER_PORT, async () => {
 	app.use(express.static("download"));
+	app.use("/", serveIndex("download", { icons: true }));
 
 	await connectSFTP();
 

@@ -15,6 +15,7 @@
     "express": "^4.21.2",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.9",
+    "serve-index": "^1.9.1",
     "ssh2-sftp-client": "^11.0.0"
   }
 }
