@@ -7,7 +7,7 @@ const Client = require("ssh2-sftp-client");
 const sftp = new Client("remote-client");
 
 const express = require("express");
-const serveIndex = require('serve-index');
+const serveIndex = require("serve-index");
 const app = express();
 
 // sftp connect
